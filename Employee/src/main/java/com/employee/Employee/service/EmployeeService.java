@@ -38,14 +38,18 @@ public class EmployeeService {
 	// READ UserSummaries by name or by UserType
 	public List<UserSummary> getSummaries(String name) {
 		if (name != null) {
+			// query parameter name is not null
 			if (name.equals(UserType.EMPLOYEE.name()) || name.equals(UserType.CONSULTANT.name())) {
+				// if name matches any UserType
 				return summaryRepo.findAllById(userRepo.getIdsByUserType(name));
 			}
 			else {
+				// if name does not match any UserType
 				return summaryRepo.searchByName(name);
 			}
 		}
 		else {
+			// return all user summaries
 			return summaryRepo.findAll();
 		}
 	}
@@ -57,8 +61,10 @@ public class EmployeeService {
 	
 	// DELETE User by ID
 	public void deleteUser(Long ID) {
+		// first delete the table rows using the foreign key
 		summaryRepo.deleteById(ID);
 		addrRepo.deleteAllById(addrRepo.searchByUserGetIds(ID));
+		// then delete the user
 		userRepo.deleteById(ID);
 	}
 	
