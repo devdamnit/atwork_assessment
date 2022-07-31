@@ -1,0 +1,11 @@
+The following requirement can be implemented better in the frontEnd of the application. 
+
+When the user/employee address is retrieved, we can use the address/postalCode to get walkScore, TransitScore, 
+and crime rate of that neighborhood. 
+
+This can be implemented by using the Geocoding API which converts addresses to GPS coordinates. 
+https://developers.google.com/maps/documentation/geocoding/requests-geocoding
+
+The GPS coordinates along with the address then can be used to retrieve the the scores of the neighborhood by
+using the walk score api.
+https://www.walkscore.com/professional/api.php
