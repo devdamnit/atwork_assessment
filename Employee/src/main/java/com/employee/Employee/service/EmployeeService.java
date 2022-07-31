@@ -37,7 +37,7 @@ public class EmployeeService {
 	
 	// READ UserSummaries by name or by UserType
 	public List<UserSummary> getSummaries(String name) {
-		if (name != null) {
+		if (name != null && !name.isEmpty()) {
 			// query parameter name is not null
 			if (name.equals(UserType.EMPLOYEE.name()) || name.equals(UserType.CONSULTANT.name())) {
 				// if name matches any UserType

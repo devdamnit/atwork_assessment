@@ -42,15 +42,6 @@ public class EmpController {
         }
 	}
 	
-	@RequestMapping(value="users/summary", method=RequestMethod.GET)
-	public ResponseEntity<List<UserSummary>> readSummaries() {
-		try {
-			return ResponseEntity.status(HttpStatus.OK).body(empService.getSummaries(null));
-        } catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad Request (CODE 400)\n");
-        }
-	}
-	
 	@RequestMapping(value="users/{userId}", method=RequestMethod.GET)
     public ResponseEntity<?> readUser(@PathVariable(value = "userId") Long ID) {
 		try {
