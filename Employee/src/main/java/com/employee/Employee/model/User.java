@@ -1,6 +1,6 @@
 package com.employee.Employee.model;
 
-import javax.persistence.GeneratedValue;
+import javax.persistence.GeneratedValue; 
 import javax.persistence.GenerationType;
 
 import java.time.LocalDate;
@@ -11,13 +11,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.*;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.employee.Employee.helper.*;
@@ -27,7 +28,7 @@ import com.employee.Employee.helper.*;
 public class User {
         
         @Id
-        @Column(name="ID")
+        @Column(name="id")
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long ID;
         
@@ -52,9 +53,6 @@ public class User {
         @Email
         private String email; 
         
-        @SuppressWarnings("unused")
-		private String fullname = this.firstName + "," + this.lastName; 
-        
         @Column(name = "gender", columnDefinition = "ENUM('MALE', 'FEMALE', 'OTHER')", nullable = false)
         @Enumerated(EnumType.STRING)
         private Gender gender;
@@ -68,10 +66,14 @@ public class User {
         @Enumerated(EnumType.STRING)
         private UserType userType;
         
-        @OneToMany(fetch = FetchType.EAGER, mappedBy = "userId", cascade = CascadeType.ALL)
+        @Transient
+        @OneToMany(targetEntity = UserAddress.class, cascade = CascadeType.ALL)
+        @JoinColumn(name = "userId", referencedColumnName = "ID")
         private Set<UserAddress> userAddresses;
         
-        @OneToOne(fetch = FetchType.LAZY, mappedBy = "ID", cascade =  CascadeType.ALL)
+        @Transient
+        @OneToOne(targetEntity = UserSummary.class, cascade =  CascadeType.ALL)
+        @JoinColumn(name = "id", referencedColumnName = "id")
         private UserSummary userSummary;
 
         public Long getId() {
@@ -148,6 +150,10 @@ public class User {
 		
 		public void removeAddress(UserAddress addr) {
 			this.userAddresses.remove(addr);
+		}
+		
+		public String getFullname() {
+			return this.firstName + "," + this.lastName;
 		}
 }
 

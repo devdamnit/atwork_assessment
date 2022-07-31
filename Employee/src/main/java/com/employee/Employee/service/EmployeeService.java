@@ -1,6 +1,6 @@
 package com.employee.Employee.service;
 
-import org.springframework.beans.factory.annotation.Autowired; 
+import org.springframework.beans.factory.annotation.Autowired;  
 import org.springframework.stereotype.Service;
 
 import com.employee.Employee.helper.*;
@@ -28,27 +28,22 @@ public class EmployeeService {
 	// CREATE UserSummary
 	public UserSummary createUserSummary(User user) {
 		UserSummary newSummary = new UserSummary();
-		newSummary.setID(user);
+		newSummary.setId(user.getId());
 		newSummary.setDateOfBirth(user.getDateOfBirth());
 		newSummary.setFirstName(user.getFirstName());
 		newSummary.setLastName(user.getLastName());
 		return summaryRepo.save(newSummary);
 	}
 	
-	// READ UserSummaries by name
+	// READ UserSummaries by name or by UserType
 	public List<UserSummary> getSummaries(String name) {
-		if (name != null) {			
-			return summaryRepo.searchByName(name);
-		}
-		else {
-			return summaryRepo.findAll();
-		}
-	}
-	
-	// READ UserSummaries by UserType
-	public List<UserSummary> getSummaries(UserType name) {
-		if (name != null) {			
-			return summaryRepo.searchByName(name);
+		if (name != null) {
+			if (name.equals(UserType.EMPLOYEE.name()) || name.equals(UserType.CONSULTANT.name())) {
+				return summaryRepo.findAllById(userRepo.getIdsByUserType(name));
+			}
+			else {
+				return summaryRepo.searchByName(name);
+			}
 		}
 		else {
 			return summaryRepo.findAll();
@@ -62,8 +57,7 @@ public class EmployeeService {
 	
 	// DELETE User by ID
 	public void deleteUser(Long ID) {
-		User userToBeDeleted = userRepo.findById(ID).get();
-		summaryRepo.deleteById(userToBeDeleted);
+		summaryRepo.deleteById(ID);
 		addrRepo.deleteAllById(addrRepo.searchByUserGetIds(ID));
 		userRepo.deleteById(ID);
 	}
@@ -71,7 +65,7 @@ public class EmployeeService {
 	// UPDATE User's ID
 	public User updateUser(Long ID, User newUser) {
 		User user = userRepo.findById(ID).get();
-		summaryRepo.deleteById(user);
+		summaryRepo.deleteById(ID);
 		user.setAnnualSalary(newUser.getAnnualSalary());
 		user.setDateOfBirth(newUser.getDateOfBirth());
 		user.setEmail(newUser.getEmail());
@@ -94,7 +88,7 @@ public class EmployeeService {
 	public UserAddress createAddress(UserAddress addr, Long ID) {
 		UserAddress addy = new UserAddress();
 		User user = userRepo.findById(ID).get();
-		addy.setUser(user);
+		addy.setUserId(user.getId());
 		addy.setAddrLn1(addr.getAddrLn1());
 		addy.setAddrLn2(addr.getAddrLn2());
 		addy.setAddrName(addr.getAddrName());

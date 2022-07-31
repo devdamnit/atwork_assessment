@@ -14,8 +14,42 @@ try:
         cursor.execute('DROP TABLE IF EXISTS userSummaries;')
         print('Creating tables....')
         
-        cursor.execute("CREATE TABLE users(id BIGINT PRIMARY KEY, firstName varchar(255), lastName varchar(255), annualSalary BIGINT, dateOfBirth varchar(11), email varchar(255), gender varchar(7), mobilePhone varchar(11), userType varchar(11))")
-        cursor.execute("CREATE TABLE userAddressess(id BIGINT PRIMARY KEY, userId BIGINT , )")
+        userTableQ = "CREATE TABLE users (" 
+        userTableQ += "id BIGINT,"
+        userTableQ += "firstName varchar(255) NOT NULL," 
+        userTableQ += "lastName varchar(255) NOT NULL,"
+        userTableQ += "annualSalary BIGINT NOT NULL," 
+        userTableQ += "dateOfBirth varchar(11) NOT NULL,"
+        userTableQ += "email varchar(255) NOT NULL,"
+        userTableQ += "gender varchar(7) NOT NULL," 
+        userTableQ += "mobilePhone varchar(11) NOT NULL," 
+        userTableQ += "userType varchar(11) NOT NULL," 
+        userTableQ += "PRIMARY KEY (id))"
+
+        addrTableQ = "CREATE TABLE userAddresses (" 
+        addrTableQ += "id BIGINT,"
+        addrTableQ += "userId BIGINT NOT NULL,"
+        addrTableQ += "addrLn1 varchar(255) NOT NULL,"
+        addrTableQ += "addrLn2 varchar(255),"
+        addrTableQ += "addrName varchar(255) NOT NULL,"
+        addrTableQ += "addrType varchar(9) NOT NULL,"
+        addrTableQ += "city varchar(255) NOT NULL,"
+        addrTableQ += "stateCode varchar(255) NOT NULL,"
+        addrTableQ += "postalCode varchar(255) NOT NULL,"
+        addrTableQ += "country varchar(255) NOT NULL,"
+        addrTableQ += "PRIMARY KEY (id),"
+        addrTableQ += "FOREIGN KEY (userId) REFERENCES users(id))"
+
+        summTableQ = "CREATE TABLE userSummaries (" 
+        summTableQ += "dateOfBirth varchar(11)," 
+        summTableQ += "firstName varchar(255)," 
+        summTableQ += "id BIGINT," 
+        summTableQ += "lastName varchar(255)," 
+        summTableQ += "FOREIGN KEY (id) REFERENCES users(id))" 
+
+        cursor.execute(userTableQ)
+        cursor.execute(addrTableQ)
+        cursor.execute(summTableQ)
 
 except Error as e:
             print("Error while connecting to MySQL", e)

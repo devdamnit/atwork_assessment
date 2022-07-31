@@ -12,9 +12,9 @@
 	<artifactId>Employee</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Employee</name>
-	<description>Atwork Systems internship assessment</description>
+	<description>Atwork Systems Intern Assessment</description>
 	<properties>
-		<java.version>14</java.version>
+		<java.version>11</java.version>
 	</properties>
 	<dependencies>
 		<dependency>

@@ -1,15 +1,12 @@
 package com.employee.Employee.model;
 
-import javax.persistence.GeneratedValue;
+import javax.persistence.GeneratedValue; 
 import javax.persistence.GenerationType;
 import javax.persistence.Column; 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.*;
 
@@ -17,18 +14,24 @@ import javax.validation.constraints.*;
 import com.employee.Employee.helper.*;
 
 @Entity
-@Table(name = "userAddresses")
+@Table(name = "user_addresses")
 public class UserAddress {
 	@Id
-    @Column(name="ID")
+    @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ID;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
-	@NotEmpty(message = "validation.userId.NotEmpty")
-    private User user;
+	@Column(name="userId")
+	private Long userId;
 	
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
 	@Column(name="addrLn1")
 	@NotBlank(message = "addrLn1 is mandatory")
 	private String addrLn1;
@@ -62,14 +65,6 @@ public class UserAddress {
 
 	public Long getId() {
 		return ID;
-	}
-	
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 
 	public String getAddrLn1() {

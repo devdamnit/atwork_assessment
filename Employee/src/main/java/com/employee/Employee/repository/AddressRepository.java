@@ -10,12 +10,12 @@ import com.employee.Employee.model.*;
 
 @Repository
 public interface AddressRepository extends JpaRepository<UserAddress, Long> {
-	@Query(value = "SELECT ID FROM userAddresses WHERE userId = :id", nativeQuery = true)
+	@Query(value = "SELECT id FROM user_addresses WHERE user_id = :id", nativeQuery = true)
 	public List<Long> searchByUserGetIds(Long id);
 	
-	@Query(value = "SELECT * FROM userAddresses WHERE userId = :id", nativeQuery = true)
+	@Query(value = "SELECT * FROM user_addresses WHERE user_id = :id", nativeQuery = true)
 	public List<UserAddress> searchByUser(Long id);
 	
-	@Query(value = "UPDATE userAddresses SET userId = :newId WHERE userId = :userId", nativeQuery = true)
+	@Query(value = "UPDATE user_addresses SET user_id = :newId WHERE user_id = :userId", nativeQuery = true)
 	public void updateUserId(Long userId, Long newId);
 }
