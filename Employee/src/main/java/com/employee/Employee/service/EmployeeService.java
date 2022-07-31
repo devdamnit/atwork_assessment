@@ -60,12 +60,18 @@ public class EmployeeService {
 	}
 	
 	// DELETE User by ID
-	public void deleteUser(Long ID) {
-		// first delete the table rows using the foreign key
-		summaryRepo.deleteById(ID);
-		addrRepo.deleteAllById(addrRepo.searchByUserGetIds(ID));
-		// then delete the user
-		userRepo.deleteById(ID);
+	public Boolean deleteUser(Long ID) {
+		try {
+			// first delete the table rows using the foreign key
+			summaryRepo.deleteById(ID);
+			addrRepo.deleteAllById(addrRepo.searchByUserGetIds(ID));
+			// then delete the user
+			userRepo.deleteById(ID);
+			return true;
+		}
+		catch (Exception e){
+			return false;
+		}
 	}
 	
 	// UPDATE User's ID

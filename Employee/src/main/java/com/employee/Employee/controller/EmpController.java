@@ -42,6 +42,15 @@ public class EmpController {
         }
 	}
 	
+	@RequestMapping(value="users/summary", method=RequestMethod.GET)
+	public ResponseEntity<List<UserSummary>> readSummaries() {
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(empService.getSummaries(null));
+        } catch (RuntimeException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad Request (CODE 400)\n");
+        }
+	}
+	
 	@RequestMapping(value="users/{userId}", method=RequestMethod.GET)
     public ResponseEntity<?> readUser(@PathVariable(value = "userId") Long ID) {
 		try {
@@ -59,16 +68,16 @@ public class EmpController {
 	
 	@RequestMapping(value="users/{userId}", method=RequestMethod.DELETE)
     public HeadersBuilder<?> deleteUser(@PathVariable(value = "userId") Long ID) {
-		try {
-			empService.deleteUser(ID);
+		if (empService.deleteUser(ID)) {
 			return ResponseEntity.noContent();
-        } catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad Request (CODE 400)\n");
-        }
+		}
+		else {
+			return ResponseEntity.notFound();
+		} 
     }
 	
 	@RequestMapping(value="users/{userId}", method=RequestMethod.PUT)
-    public ResponseEntity<?> changeUser(@PathVariable(value = "userId") Long ID, @Valid @RequestBody User user) {
+    public ResponseEntity<?> changeUser(@Valid @RequestBody User user, @PathVariable(value = "userId") Long ID) {
 		try {
 			User res = empService.updateUser(ID, user);
 			if (res != null) {
